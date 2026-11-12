@@ -1,0 +1,853 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0d">
+
+  <title>NEV Launcher</title>
+  <meta name="description" content="Download NEV Launcher, launcher Minecraft Java untuk Android.">
+  <meta name="keywords" content="NEV Launcher, Minecraft Java Android, launcher Minecraft, download NEV Launcher">
+  <meta name="author" content="NEV Launcher">
+
+  <meta property="og:title" content="NEV Launcher">
+  <meta property="og:description" content="Pengalaman Minecraft Java di perangkat Android.">
+  <meta property="og:type" content="website">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #0b0b0d;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1100px, 90%);
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 11, 13, .94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #292929;
+    }
+
+    nav {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .brand span {
+      color: #ff5738;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .nav-links a:hover {
+      color: #ff5738;
+    }
+
+    .hero {
+      min-height: 570px;
+      display: flex;
+      align-items: center;
+      padding: 75px 0;
+      background:
+        radial-gradient(ellipse at 85% 25%, rgba(255, 65, 35, .2), transparent 45%),
+        radial-gradient(ellipse at 10% 90%, rgba(255, 140, 30, .1), transparent 40%);
+    }
+
+    .hero-content {
+      max-width: 720px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 85, 50, .4);
+      background: rgba(255, 70, 40, .08);
+      color: #ff795c;
+      font-size: 12px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 8vw, 76px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, #ff3d2e, #ff9b32);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: #aaa;
+      max-width: 570px;
+      margin-bottom: 28px;
+      font-size: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 13px 22px;
+      border-radius: 9px;
+      font-weight: bold;
+      font-size: 14px;
+      transition: .2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(110deg, #ff382e, #ff792e);
+      box-shadow: 0 8px 25px rgba(255, 65, 40, .2);
+      border: 0;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 65, 40, .35);
+    }
+
+    .btn-secondary {
+      border: 1px solid #393939;
+      background: #151517;
+      color: #ddd;
+    }
+
+    section {
+      padding: 75px 0;
+    }
+
+    .section-title {
+      font-size: 29px;
+      margin-bottom: 8px;
+    }
+
+    .section-description {
+      color: #999;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: #151517;
+      border: 1px solid #292929;
+      border-radius: 13px;
+      padding: 24px;
+    }
+
+    .stat-card strong {
+      display: block;
+      color: #ff6542;
+      font-size: 27px;
+      margin-bottom: 5px;
+    }
+
+    .stat-card span {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature {
+      padding: 24px;
+      background: #151517;
+      border: 1px solid #292929;
+      border-radius: 13px;
+      transition: .2s;
+    }
+
+    .feature:hover {
+      border-color: #ff5738;
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      font-size: 13px;
+      color: #999;
+    }
+
+    .download-box {
+      text-align: center;
+      padding: 40px 20px;
+      border: 1px solid #38302e;
+      border-radius: 17px;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(255, 90, 35, .2), transparent 40%),
+        #151517;
+    }
+
+    .download-box h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .download-box p {
+      color: #aaa;
+      margin-bottom: 22px;
+    }
+
+    .review-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .review-form,
+    .review-list {
+      padding: 23px;
+      background: #151517;
+      border: 1px solid #292929;
+      border-radius: 13px;
+    }
+
+    .review-form h3,
+    .review-list h3 {
+      margin-bottom: 17px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      display: block;
+      padding: 12px;
+      margin-bottom: 13px;
+      color: white;
+      background: #0d0d0f;
+      border: 1px solid #333;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #ff5838;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .review-form button {
+      width: 100%;
+    }
+
+    .review-form button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .review-summary {
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .review-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #303030;
+    }
+
+    .review-item:last-child {
+      border-bottom: 0;
+    }
+
+    .review-name {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .stars {
+      color: #ff9d35;
+      letter-spacing: 2px;
+      font-size: 14px;
+    }
+
+    .review-message {
+      color: #bbb;
+      font-size: 13px;
+      margin-top: 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      color: #888;
+      font-size: 13px;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid #292929;
+      color: #777;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    footer strong {
+      color: #ff6542;
+    }
+
+    @media (max-width: 700px) {
+      .hero {
+        min-height: 480px;
+        padding: 60px 0;
+      }
+
+      .stats,
+      .features,
+      .review-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 25px;
+      }
+
+      .nav-links {
+        gap: 11px;
+        font-size: 11px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      nav {
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <a class="brand" href="#">NEV<span> LAUNCHER</span></a>
+
+        <div class="nav-links">
+          <a href="#fitur">Fitur</a>
+          <a href="#download">Download</a>
+          <a href="#ulasan">Ulasan</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+
+          <div class="tag">MINECRAFT JAVA • ANDROID</div>
+
+          <h1>
+            DUNIAMU SESUAI<br>
+            <span>KEINGINANMU</span>
+          </h1>
+
+          <p>
+            Kenalkan NEV Launcher, launcher Minecraft Java
+            untuk Android. Nikmati pengalaman bermain dan
+            kelola permainanmu langsung dari perangkat mobile.
+          </p>
+
+          <div class="buttons">
+            <a
+              id="downloadButton"
+              class="btn btn-primary"
+              href="https://github.com/NestMCC/Nev-Launcher/releases/tag/v1.0.0"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ⬇ Unduh NEV Launcher
+            </a>
+
+            <a class="btn btn-secondary" href="#fitur">
+              Jelajahi Fitur
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="statistik">
+      <div class="container">
+
+        <h2 class="section-title">NEV Launcher Statistics</h2>
+        <p class="section-description">
+          Statistik berdasarkan data GitHub Releases.
+        </p>
+
+        <div class="stats">
+
+          <div class="stat-card">
+            <strong id="downloadCount">...</strong>
+            <span>Total unduhan APK</span>
+          </div>
+
+          <div class="stat-card">
+            <strong>Android</strong>
+            <span>Platform yang dituju</span>
+          </div>
+
+          <div class="stat-card">
+            <strong id="releaseVersion">v1.0.0</strong>
+            <span>Versi rilis</span>
+          </div>
+
+        </div>
+
+        <p id="statsStatus" class="section-description" style="margin-top:12px;margin-bottom:0">
+          Mengambil data GitHub...
+        </p>
+
+      </div>
+    </section>
+
+    <section id="fitur">
+      <div class="container">
+
+        <h2 class="section-title">Kenapa NEV Launcher?</h2>
+        <p class="section-description">
+          Dibuat dengan fokus pada pengalaman Minecraft Java di Android.
+        </p>
+
+        <div class="features">
+
+          <div class="feature">
+            <div class="feature-icon">📱</div>
+            <h3>Android Focus</h3>
+            <p>Dirancang dengan fokus pada penggunaan perangkat Android.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">⚙️</div>
+            <h3>Pengaturan Game</h3>
+            <p>Kelola pengalaman bermain melalui pengaturan launcher.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🎮</div>
+            <h3>Minecraft Java</h3>
+            <p>Launcher yang ditujukan untuk menjalankan Minecraft Java di HP.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="download">
+      <div class="container">
+
+        <div class="download-box">
+          <h2>Download NEV Launcher</h2>
+
+          <p>
+            Dapatkan versi NEV Launcher melalui halaman resmi GitHub.
+          </p>
+
+          <a
+            id="downloadButtonBottom"
+            class="btn btn-primary"
+            href="https://github.com/NestMCC/Nev-Launcher/releases/tag/v1.0.0"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ⬇ DOWNLOAD APK
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="ulasan">
+      <div class="container">
+
+        <h2 class="section-title">Ulasan Pengguna</h2>
+        <p class="section-description">
+          Bagikan pengalamanmu menggunakan NEV Launcher.
+        </p>
+
+        <div class="review-layout">
+
+          <form class="review-form" id="reviewForm">
+            <h3>Tulis Ulasan</h3>
+
+            <input
+              id="reviewName"
+              type="text"
+              maxlength="30"
+              placeholder="Nama pengguna"
+              required
+            >
+
+            <select id="reviewRating" required>
+              <option value="">Pilih rating</option>
+              <option value="5">★★★★★ - Sangat bagus</option>
+              <option value="4">★★★★ - Bagus</option>
+              <option value="3">★★★ - Cukup</option>
+              <option value="2">★★ - Kurang</option>
+              <option value="1">★ - Buruk</option>
+            </select>
+
+            <textarea
+              id="reviewMessage"
+              maxlength="500"
+              placeholder="Tulis pengalamanmu..."
+              required
+            ></textarea>
+
+            <button class="btn btn-primary" type="submit" id="submitReview">
+              Kirim Ulasan
+            </button>
+
+            <p id="reviewStatus" class="empty" style="margin-top:12px"></p>
+          </form>
+
+          <div class="review-list">
+            <h3>Ulasan Komunitas</h3>
+
+            <div class="review-summary" id="reviewSummary">
+              Memuat ulasan...
+            </div>
+
+            <div id="reviews">
+              <p class="empty">Memuat ulasan pengguna...</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 <strong>NEV Launcher</strong>. All rights reserved.</p>
+      <p>Minecraft adalah merek dagang Mojang Studios. NEV Launcher bukan produk resmi Mojang.</p>
+    </div>
+  </footer>
+
+  <!-- GITHUB DOWNLOAD COUNTER -->
+  <script>
+    const GITHUB_OWNER = "NestMCC";
+    const GITHUB_REPO = "Nev-Launcher";
+
+    const RELEASE_URL =
+      "https://github.com/NestMCC/Nev-Launcher/releases/tag/v1.0.0";
+
+    document.getElementById("downloadButton").href = RELEASE_URL;
+    document.getElementById("downloadButtonBottom").href = RELEASE_URL;
+
+    async function loadDownloadCount() {
+      const countElement = document.getElementById("downloadCount");
+      const statusElement = document.getElementById("statsStatus");
+      const versionElement = document.getElementById("releaseVersion");
+
+      try {
+        let total = 0;
+        let page = 1;
+        let latestVersion = "v1.0.0";
+
+        while (page <= 10) {
+          const response = await fetch(
+            `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases?per_page=100&page=${page}`
+          );
+
+          if (!response.ok) {
+            throw new Error("GitHub API error: " + response.status);
+          }
+
+          const releases = await response.json();
+
+          if (!Array.isArray(releases) || releases.length === 0) {
+            break;
+          }
+
+          if (page === 1 && releases[0]) {
+            latestVersion = releases[0].tag_name || latestVersion;
+          }
+
+          for (const release of releases) {
+            const assets = release.assets || [];
+
+            for (const asset of assets) {
+              if (asset.name.toLowerCase().endsWith(".apk")) {
+                total += Number(asset.download_count || 0);
+              }
+            }
+          }
+
+          if (releases.length < 100) {
+            break;
+          }
+
+          page++;
+        }
+
+        countElement.textContent = total.toLocaleString("id-ID");
+        versionElement.textContent = latestVersion;
+        statusElement.textContent = "Statistik berhasil diperbarui dari GitHub.";
+
+      } catch (error) {
+        console.error("GitHub statistics error:", error);
+        countElement.textContent = "—";
+        statusElement.textContent =
+          "Statistik sementara tidak tersedia. Coba muat ulang halaman.";
+      }
+    }
+
+    loadDownloadCount();
+    setInterval(loadDownloadCount, 30000);
+  </script>
+
+  <!-- FIREBASE REVIEWS -->
+  <script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      query,
+      orderBy,
+      limit,
+      onSnapshot,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    /*
+      MASUKKAN FIREBASE CONFIG MILIKMU DI SINI.
+      Firebase Console:
+      https://console.firebase.google.com/
+    */
+
+    const firebaseConfig = {
+      apiKey: "ISI_API_KEY",
+      authDomain: "ISI_PROJECT_ID.firebaseapp.com",
+      projectId: "ISI_PROJECT_ID",
+      storageBucket: "ISI_PROJECT_ID.appspot.com",
+      messagingSenderId: "ISI_MESSAGING_SENDER_ID",
+      appId: "ISI_APP_ID"
+    };
+
+    const configReady =
+      firebaseConfig.apiKey !== "ISI_API_KEY" &&
+      firebaseConfig.projectId !== "ISI_PROJECT_ID" &&
+      firebaseConfig.appId !== "ISI_APP_ID";
+
+    const form = document.getElementById("reviewForm");
+    const status = document.getElementById("reviewStatus");
+    const reviewsBox = document.getElementById("reviews");
+    const summary = document.getElementById("reviewSummary");
+    const submitButton = document.getElementById("submitReview");
+
+    if (!configReady) {
+      reviewsBox.textContent =
+        "Ulasan belum diaktifkan. Firebase perlu dikonfigurasi terlebih dahulu.";
+
+      summary.textContent = "Sistem ulasan belum dikonfigurasi.";
+      status.textContent = "Admin perlu mengatur Firebase terlebih dahulu.";
+
+      submitButton.disabled = true;
+
+    } else {
+      try {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const reviewCollection = collection(db, "reviews");
+
+        const reviewQuery = query(
+          reviewCollection,
+          orderBy("createdAt", "desc"),
+          limit(50)
+        );
+
+        /*
+          Anotasi JSDoc berikut memperbaiki peringatan
+          TypeScript TS7044 pada parameter callback.
+        */
+
+        /** @param {any} document */
+        function renderReview(document) {
+          const review = document.data();
+
+          const rating = Math.min(
+            5,
+            Math.max(1, Number(review.rating) || 1)
+          );
+
+          const item = document.createElement("div");
+          item.className = "review-item";
+
+          const name = document.createElement("div");
+          name.className = "review-name";
+          name.textContent = review.name || "Pengguna";
+
+          const stars = document.createElement("div");
+          stars.className = "stars";
+          stars.textContent =
+            "★".repeat(rating) + "☆".repeat(5 - rating);
+
+          const message = document.createElement("p");
+          message.className = "review-message";
+          message.textContent = review.message || "";
+
+          item.append(name, stars, message);
+          reviewsBox.appendChild(item);
+
+          return rating;
+        }
+
+        /** @param {any} snapshot */
+        function handleSnapshot(snapshot) {
+          reviewsBox.innerHTML = "";
+
+          if (snapshot.empty) {
+            reviewsBox.textContent =
+              "Belum ada ulasan. Jadilah yang pertama!";
+
+            summary.textContent = "Belum ada rating.";
+            return;
+          }
+
+          let totalRating = 0;
+
+          snapshot.forEach((document) => {
+            totalRating += renderReview(document);
+          });
+
+          const average = totalRating / snapshot.size;
+
+          summary.textContent =
+            `⭐ ${average.toFixed(1)} / 5 dari ${snapshot.size} ulasan terbaru`;
+        }
+
+        /** @param {any} error */
+        function handleSnapshotError(error) {
+          console.error("Firebase snapshot error:", error);
+
+          reviewsBox.textContent =
+            "Gagal memuat ulasan. Periksa konfigurasi dan aturan Firestore.";
+
+          summary.textContent = "Ulasan tidak tersedia.";
+        }
+
+        onSnapshot(
+          reviewQuery,
+          handleSnapshot,
+          handleSnapshotError
+        );
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const name = document
+            .getElementById("reviewName")
+            .value.trim();
+
+          const rating = Number(
+            document.getElementById("reviewRating").value
+          );
+
+          const message = document
+            .getElementById("reviewMessage")
+            .value.trim();
+
+          if (
+            !name ||
+            name.length > 30 ||
+            !message ||
+            
