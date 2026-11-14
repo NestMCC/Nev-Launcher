@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0d">
+  <title>NEV Launcher - Minecraft Java Android</title>
+  <meta name="description" content="Download NEV Launcher, launcher Minecraft Java untuk Android. Lihat versi terbaru, riwayat rilis, dan statistik unduhan.">
+  <meta name="keywords" content="NEV Launcher, Minecraft Java Android, launcher Minecraft">
+  <meta name="author" content="NEV Launcher">
+  <meta property="og:title" content="NEV Launcher">
+  <meta property="og:description" content="Your World. Your Way. Minecraft Java on Android.">
+  <meta property="og:type" content="website">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:#0b0b0d;color:#fff;font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+    body.modal-open{overflow:hidden}
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    .container{width:min(1100px,90%);margin:auto}
+    header{position:sticky;top:0;z-index:100;background:rgba(11,11,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid #292929}
+    nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+    .brand{font-size:20px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+    .brand span{color:#ff5738}
+    .nav-links{display:flex;gap:20px;color:#aaa;font-size:13px}
+    .nav-links a:hover{color:#ff5738}
+    .hero{min-height:550px;display:flex;align-items:center;padding:75px 0;background:radial-gradient(ellipse at 85% 25%,rgba(255,65,35,.2),transparent 45%),radial-gradient(ellipse at 10% 90%,rgba(255,140,30,.1),transparent 40%)}
+    .hero-content{max-width:720px}
+    .tag{display:inline-block;padding:7px 14px;border-radius:30px;border:1px solid rgba(255,85,50,.4);background:rgba(255,70,40,.08);color:#ff795c;font-size:12px;margin-bottom:22px}
+    h1{font-size:clamp(42px,8vw,76px);line-height:1.08;letter-spacing:-2px;margin-bottom:20px}
+    h1 span{background:linear-gradient(90deg,#ff3d2e,#ff9b32);background-clip:text;-webkit-background-clip:text;color:transparent}
+    .hero p{color:#aaa;max-width:570px;margin-bottom:28px;font-size:15px}
+    .buttons{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 22px;border-radius:9px;font-weight:bold;font-size:14px;transition:.2s;cursor:pointer;border:0}
+    .btn-primary{color:white;background:linear-gradient(110deg,#ff382e,#ff792e);box-shadow:0 8px 25px rgba(255,65,40,.2)}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(255,65,40,.35)}
+    .btn-secondary{border:1px solid #393939;background:#151517;color:#ddd}
+    .btn-secondary:hover{border-color:#ff5738}
+    section{padding:70px 0}
+    .section-title{font-size:29px;margin-bottom:8px}
+    .section-description{color:#999;font-size:14px;margin-bottom:28px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .stat-card{background:#151517;border:1px solid #292929;border-radius:14px;padding:25px}
+    .stat-card strong{display:block;color:#ff6542;font-size:28px;margin-bottom:5px;overflow-wrap:anywhere}
+    .stat-card span{color:#999;font-size:13px}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .feature{padding:24px;background:#151517;border:1px solid #292929;border-radius:13px;transition:.2s}
+    .feature:hover{border-color:#ff5738;transform:translateY(-3px)}
+    .feature-icon{font-size:28px;margin-bottom:12px}
+    .feature h3{font-size:17px;margin-bottom:8px}
+    .feature p{font-size:13px;color:#999}
+    .download-box{text-align:center;padding:35px 20px;border:1px solid #38302e;border-radius:17px;background:radial-gradient(circle at 90% 10%,rgba(255,90,35,.2),transparent 40%),#151517;margin-bottom:30px}
+    .download-box h2{font-size:27px;margin-bottom:10px}
+    .download-box p{color:#aaa;margin-bottom:20px}
+    .release-list{display:grid;gap:13px}
+    .release-card{background:#151517;border:1px solid #292929;border-radius:13px;padding:20px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+    .release-info h3{font-size:17px;margin-bottom:5px;overflow-wrap:anywhere}
+    .release-info p{color:#999;font-size:12px}
+    .release-downloads{color:#ff8055!important;margin-top:6px}
+    .release-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .version-badge{color:#ff8055;border:1px solid #683629;background:#261510;padding:4px 9px;border-radius:20px;font-size:11px;white-space:nowrap}
+    .release-actions .btn{padding:10px 14px;font-size:12px}
+    .review-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:20px;align-items:start}
+    .review-form,.review-list{padding:23px;background:#151517;border:1px solid #292929;border-radius:13px}
+    .review-form h3,.review-list h3{margin-bottom:17px}
+    input,textarea,select{width:100%;display:block;padding:12px;margin-bottom:13px;color:white;background:#0d0d0f;border:1px solid #333;border-radius:8px;outline:none}
+    input:focus,textarea:focus,select:focus{border-color:#ff5838}
+    textarea{min-height:100px;resize:vertical}
+    .review-form button{width:100%}
+    .review-form button:disabled{opacity:.5;cursor:not-allowed}
+    .review-summary{color:#aaa;font-size:13px;margin-bottom:15px}
+    .review-item{padding:15px 0;border-bottom:1px solid #303030}
+    .review-item:last-child{border-bottom:0}
+    .review-name{font-weight:bold;font-size:14px}
+    .stars{color:#ff9d35;letter-spacing:2px;font-size:14px}
+    .review-message{color:#bbb;font-size:13px;margin-top:7px;overflow-wrap:anywhere}
+    .empty{color:#888;font-size:13px}
+    footer{padding:28px 0;border-top:1px solid #292929;color:#777;text-align:center;font-size:12px}
+    footer strong{color:#ff6542}
+
+    /* ===== Pop up Saluran WhatsApp ===== */
+    .wa-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+    .wa-overlay.show{opacity:1;visibility:visible}
+    .wa-modal{width:min(440px,100%);padding:22px;background:#0a0a0c;border:1px solid #38302e;border-radius:22px;box-shadow:0 0 0 4px rgba(255,85,50,.06),0 25px 60px rgba(0,0,0,.6),0 0 40px rgba(255,65,35,.12);transform:translateY(16px) scale(.97);transition:transform .25s}
+    .wa-overlay.show .wa-modal{transform:translateY(0) scale(1)}
+    .wa-head{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid #26262a}
+    .wa-icon{width:36px;height:36px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,70,40,.1);border:1px solid rgba(255,85,50,.4);color:#ff6542}
+    .wa-icon svg{width:18px;height:18px}
+    .wa-titles{flex:1;min-width:0}
+    .wa-title{font-size:14px;font-weight:700;color:#fff;line-height:1.3}
+    .wa-sub{font-family:"Courier New",monospace;font-size:9.5px;letter-spacing:.8px;color:#7d7d85;text-transform:uppercase}
+    .wa-close{width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #33333a;background:#141417;color:#ccc;cursor:pointer;font-size:14px;transition:.2s}
+    .wa-close:hover{border-color:#ff5738;color:#fff}
+    .wa-body{margin:16px 0;padding:13px 14px;font-size:13px;color:#e6e6e9;background:#131316;border:1px solid #26262a;border-radius:10px}
+    .wa-foot{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding-top:16px;border-top:1px solid #26262a}
+    .wa-btn{padding:9px 16px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center}
+    .wa-btn-ghost{color:#e6e6e9;background:#141417;border:1px solid #33333a}
+    .wa-btn-ghost:hover{border-color:#ff5738}
+    .wa-btn-main{color:#fff;background:linear-gradient(110deg,#ff382e,#ff792e);border:0;box-shadow:0 6px 18px rgba(255,65,40,.25)}
+    .wa-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,65,40,.4)}
+
+    @media(max-width:700px){.hero{min-height:470px;padding:60px 0}.stats,.features,.review-layout{grid-template-columns:1fr}.section-title{font-size:25px}.nav-links{gap:11px;font-size:11px}.brand{font-size:16px}.release-card{align-items:flex-start;flex-direction:column}}
+    @media(max-width:340px){nav{flex-wrap:wrap;padding:12px 0}.nav-links{width:100%;justify-content:space-between}}
+  </style>
+</head>
+<body>
+<header><div class="container"><nav>
+  <a class="brand" href="#">NEV<span> LAUNCHER</span></a>
+  <div class="nav-links">
+    <a href="#statistik">Statistik</a><a href="#fitur">Fitur</a><a href="#download">Download</a><a href="#ulasan">Ulasan</a>
+  </div>
+</nav></div></header>
+
+<main>
+  <section class="hero"><div class="container"><div class="hero-content">
+    <div class="tag">MINECRAFT JAVA • ANDROID</div>
+    <h1>YOUR WORLD.<br><span>YOUR WAY.</span></h1>
+    <p>Kenalkan NEV Launcher, launcher Minecraft Java untuk Android. Nikmati pengalaman bermain dan kelola permainanmu langsung dari perangkat mobile.</p>
+    <div class="buttons">
+      <a id="downloadButton" class="btn btn-primary" href="https://github.com/NestMCC/Nev-Launcher/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer">⬇ Unduh NEV Launcher</a>
+      <a class="btn btn-secondary" href="#fitur">Jelajahi Fitur</a>
+    </div>
+  </div></div></section>
+
+  <section id="statistik"><div class="container">
+    <h2 class="section-title">NEV Launcher Statistics</h2>
+    <p class="section-description">Statistik unduhan langsung dari GitHub.</p>
+    <div class="stats">
+      <div class="stat-card"><strong id="downloadCount">...</strong><span>Total unduhan APK</span></div>
+      <div class="stat-card"><strong id="releaseCount">...</strong><span>Total versi rilis</span></div>
+      <div class="stat-card"><strong id="releaseVersion">...</strong><span>Versi terbaru</span></div>
+    </div>
+    <p id="statsStatus" class="section-description" style="margin-top:12px;margin-bottom:0">Mengambil data GitHub...</p>
+  </div></section>
+
+  <section id="fitur"><div class="container">
+    <h2 class="section-title">Kenapa NEV Launcher?</h2>
+    <p class="section-description">Dibuat dengan fokus pada pengalaman Minecraft Java di Android.</p>
+    <div class="features">
+      <div class="feature"><div class="feature-icon">📱</div><h3>Android Focus</h3><p>Dirancang dengan fokus pada penggunaan perangkat Android.</p></div>
+      <div class="feature"><div class="feature-icon">⚙️</div><h3>Pengaturan Game</h3><p>Kelola pengalaman bermain melalui pengaturan launcher.</p></div>
+      <div class="feature"><div class="feature-icon">🎮</div><h3>Minecraft Java</h3><p>Launcher yang ditujukan untuk menjalankan Minecraft Java di HP.</p></div>
+    </div>
+  </div></section>
+
+  <section id="download"><div class="container">
+    <h2 class="section-title">Download NEV Launcher</h2>
+    <p class="section-description">Semua versi yang tersedia di GitHub Releases.</p>
+    <div class="download-box">
+      <h2>Versi Terbaru</h2>
+      <p id="latestReleaseInfo">Mengambil informasi versi terbaru...</p>
+      <a id="downloadButtonBottom" class="btn btn-primary" href="https://github.com/NestMCC/Nev-Launcher/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer">⬇ DOWNLOAD APK TERBARU</a>
+    </div>
+    <h3 style="margin-bottom:15px">Riwayat Versi</h3>
+    <div id="releaseList" class="release-list"><p class="empty">Memuat daftar versi...</p></div>
+  </div></section>
+
+  <section id="ulasan"><div class="container">
+    <h2 class="section-title">Ulasan Pengguna</h2>
+    <p class="section-description">Bagikan pengalamanmu menggunakan NEV Launcher.</p>
+    <div class="review-layout">
+      <form class="review-form" id="reviewForm">
+        <h3>Tulis Ulasan</h3>
+        <input id="reviewName" type="text" maxlength="30" placeholder="Nama pengguna" required>
+        <select id="reviewRating" required>
+          <option value="">Pilih rating</option><option value="5">★★★★★ - Sangat bagus</option><option value="4">★★★★ - Bagus</option><option value="3">★★★ - Cukup</option><option value="2">★★ - Kurang</option><option value="1">★ - Buruk</option>
+        </select>
+        <textarea id="reviewMessage" maxlength="500" placeholder="Tulis pengalamanmu..." required></textarea>
+        <button class="btn btn-primary" type="submit" id="submitReview">Kirim Ulasan</button>
+        <p id="reviewStatus" class="empty" style="margin-top:12px"></p>
+      </form>
+      <div class="review-list">
+        <h3>Ulasan Komunitas</h3>
+        <div class="review-summary" id="reviewSummary">Sistem ulasan belum dikonfigurasi.</div>
+        <div id="reviews"><p class="empty">Ulasan belum tersedia.</p></div>
+      </div>
+    </div>
+  </div></section>
+</main>
+
+<footer><div class="container">
+  <p>© 2026 <strong>NEV Launcher</strong>. All rights reserved.</p>
+  <p>Minecraft adalah merek dagang Mojang Studios. NEV Launcher bukan produk resmi Mojang.</p>
+</div></footer>
+
+<!-- Pop up Saluran WhatsApp (muncul setiap kali website dibuka) -->
+<div class="wa-overlay" id="waOverlay" role="dialog" aria-modal="true" aria-labelledby="waTitle">
+  <div class="wa-modal">
+    <div class="wa-head">
+      <div class="wa-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+      </div>
+      <div class="wa-titles">
+        <div class="wa-title" id="waTitle">JOIN SALURAN WHATSAPP</div>
+        <div class="wa-sub">NEV LAUNCHER ANNOUNCEMENT</div>
+      </div>
+      <button type="button" class="wa-close" id="waCloseX" aria-label="Tutup">✕</button>
+    </div>
+    <div class="wa-body">untuk mendapatkan informasi &amp; update Nev Launcher</div>
+    <div class="wa-foot">
+      <a class="wa-btn wa-btn-ghost" id="waOpen" href="https://whatsapp.com/channel/0029VbDTPs4HgZWicPs7aR1c" target="_blank" rel="noopener noreferrer">Buka Tautan</a>
+      <button type="button" class="wa-btn wa-btn-main" id="waCloseBtn">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ===== Pop up WhatsApp ===== */
+(function () {
+  const overlay = document.getElementById("waOverlay");
+  function openPopup() {
+    overlay.classList.add("show");
+    document.body.classList.add("modal-open");
+  }
+  function closePopup() {
+    overlay.classList.remove("show");
+    document.body.classList.remove("modal-open");
+  }
+  document.getElementById("waCloseX").addEventListener("click", closePopup);
+  document.getElementById("waCloseBtn").addEventListener("click", closePopup);
+  document.getElementById("waOpen").addEventListener("click", closePopup);
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay) closePopup();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePopup();
+  });
+  // Muncul setiap kali website dibuka
+  setTimeout(openPopup, 600);
+})();
+
+const GITHUB_API = "https://api.github.com/repos/NestMCC/Nev-Launcher/releases";
+const FALLBACK_URL = "https://github.com/NestMCC/Nev-Launcher/releases/tag/v1.0.0";
+
+const countElement = document.getElementById("downloadCount");
+const releaseCountElement = document.getElementById("releaseCount");
+const versionElement = document.getElementById("releaseVersion");
+const statusElement = document.getElementById("statsStatus");
+const releaseList = document.getElementById("releaseList");
+const latestInfo = document.getElementById("latestReleaseInfo");
+const topButton = document.getElementById("downloadButton");
+const bottomButton = document.getElementById("downloadButtonBottom");
+
+topButton.href = FALLBACK_URL;
+bottomButton.href = FALLBACK_URL;
+
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString("id-ID");
+}
+
+function formatDate(value) {
+  if (!value) return "Tanggal tidak tersedia";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Tanggal tidak tersedia";
+  return date.toLocaleDateString("id-ID", {
+    day: "numeric", month: "long", year: "numeric"
+  });
+}
+
+function createReleaseCard(release, isLatest) {
+  const assets = Array.isArray(release.assets) ? release.assets : [];
+  const apkAssets = assets.filter(asset =>
+    typeof asset.name === "string" && asset.name.toLowerCase().endsWith(".apk")
+  );
+  const apkDownloads = apkAssets.reduce(
+    (sum, asset) => sum + Number(asset.download_count || 0), 0
+  );
+
+  const card = document.createElement("div");
+  card.className = "release-card";
+
+  const info = document.createElement("div");
+  info.className = "release-info";
+
+  const title = document.createElement("h3");
+  title.textContent = release.tag_name || release.name || "Versi tanpa nama";
+
+  const date = document.createElement("p");
+  date.textContent = "Dirilis: " + formatDate(release.published_at);
+
+  const downloads = document.createElement("p");
+  downloads.className = "release-downloads";
+  downloads.textContent = "⬇ " + formatNumber(apkDownloads) + " unduhan APK";
+
+  info.append(title, date, downloads);
+
+  const actions = document.createElement("div");
+  actions.className = "release-actions";
+
+  if (isLatest) {
+    const badge = document.createElement("span");
+    badge.className = "version-badge";
+    badge.textContent = "TERBARU";
+    actions.appendChild(badge);
+  }
+
+  if (apkAssets.length > 0) {
+    apkAssets.forEach(asset => {
+      const button = document.createElement("a");
+      button.className = "btn btn-primary";
+      button.href = asset.browser_download_url;
+      button.target = "_blank";
+      button.rel = "noopener noreferrer";
+      button.textContent = "Download " + asset.name;
+      actions.appendChild(button);
+    });
+  } else {
+    const link = document.createElement("a");
+    link.className = "btn btn-secondary";
+    link.href = release.html_url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Lihat Release";
+    actions.appendChild(link);
+  }
+
+  card.append(info, actions);
+  return card;
+}
+
+async function loadReleases() {
+  statusElement.textContent = "Mengambil data GitHub...";
+
+  try {
+    let allReleases = [];
+    let page = 1;
+
+    // Mengambil maksimal 1.000 release.
+    while (page <= 10) {
+      const response = await fetch(
+        GITHUB_API + "?per_page=100&page=" + page,
+        { headers: { "Accept": "application/vnd.github+json" } }
+      );
+
+      if (!response.ok) {
+        throw new Error("GitHub API HTTP " + response.status);
+      }
+
+      const releases = await response.json();
+      if (!Array.isArray(releases)) {
+        throw new Error("Format data GitHub tidak valid.");
+      }
+
+      if (releases.length === 0) break;
+      allReleases = allReleases.concat(releases);
+      if (releases.length < 100) break;
+      page++;
+    }
+
+    let totalDownloads = 0;
+
+    allReleases.forEach(release => {
+      const assets = Array.isArray(release.assets) ? release.assets : [];
+      assets.forEach(asset => {
+        if (typeof asset.name === "string" &&
+            asset.name.toLowerCase().endsWith(".apk")) {
+          totalDownloads += Number(asset.download_count || 0);
+        }
+      });
+    });
+
+    countElement.textContent = formatNumber(totalDownloads);
+    releaseCountElement.textContent = formatNumber(allReleases.length);
+    releaseList.replaceChildren();
+
+    if (allReleases.length === 0) {
+      versionElement.textContent = "Belum ada";
+      latestInfo.textContent = "Belum ada GitHub Release yang tersedia.";
+      releaseList.textContent = "Belum ada versi yang diterbitkan.";
+      statusElement.textContent =
+        "GitHub API berhasil diakses, tetapi belum ada release.";
+      return;
+    }
+
+    const latest = allReleases[0];
+    versionElement.textContent = latest.tag_name || latest.name || "Terbaru";
+
+    const latestAssets = Array.isArray(latest.assets) ? latest.assets : [];
+    const latestApk = latestAssets.find(asset =>
+      typeof asset.name === "string" && asset.name.toLowerCase().endsWith(".apk")
+    );
+
+    if (latestApk) {
+      topButton.href = latestApk.browser_download_url;
+      bottomButton.href = latestApk.browser_download_url;
+      latestInfo.textContent =
+        (latest.tag_name || latest.name) + " • " + formatDate(latest.published_at);
+    } else {
+      topButton.href = latest.html_url;
+      bottomButton.href = latest.html_url;
+      latestInfo.textContent = "Release terbaru belum memiliki file APK.";
+    }
+
+    allReleases.forEach((release, index) => {
+      releaseList.appendChild(createReleaseCard(release, index === 0));
+    });
+
+    statusElement.textContent = "Berhasil mengambil data GitHub.";
+  } catch (error) {
+    console.error("NEV GitHub Error:", error);
+    countElement.textContent = "—";
+    releaseCountElement.textContent = "—";
+    versionElement.textContent = "—";
+    latestInfo.textContent = "Informasi versi sementara tidak tersedia.";
+    releaseList.textContent = "Gagal mengambil daftar versi dari GitHub.";
+    statusElement.textContent = "Gagal mengambil data: " + error.message;
+  }
+}
+
+loadReleases();
+setInterval(loadReleases, 30000);
+</script>
+
+<!-- Firebase Reviews: Authentication + Cloud Firestore -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, serverTimestamp,
+  query, orderBy, limit, onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAHSOPas5szOlTnC4_ZP7H-PM_h5QqxXA",
+  authDomain: "ulasan-11691.firebaseapp.com",
+  projectId: "ulasan-11691",
+  storageBucket: "ulasan-11691.firebasestorage.app",
+  messagingSenderId: "446819864263",
+  appId: "1:446819864263:web:829d65af207be14edab8e2",
+  measurementId: "G-FBY5GQYYJP"
+};
+
+const form = document.getElementById("reviewForm");
+const nameInput = document.getElementById("reviewName");
+const ratingInput = document.getElementById("reviewRating");
+const messageInput = document.getElementById("reviewMessage");
+const submitButton = document.getElementById("submitReview");
+const statusBox = document.getElementById("reviewStatus");
+const reviewsBox = document.getElementById("reviews");
+const summaryBox = document.getElementById("reviewSummary");
+
+let currentUser = null;
+let unsubscribeReviews = null;
+
+function showError(prefix, error) {
+  console.error("NEV Firebase:", error);
+  const code = error && error.code ? error.code : "unknown";
+  statusBox.textContent = prefix + " (" + code + "). Buka Console browser untuk detail.";
+  summaryBox.textContent = "Gagal memuat ulasan: " + code;
+}
+
+function renderReviews(snapshot) {
+  reviewsBox.replaceChildren();
+
+  if (snapshot.empty) {
+    reviewsBox.textContent = "Belum ada ulasan. Jadilah yang pertama!";
+    summaryBox.textContent = "Belum ada ulasan komunitas.";
+    return;
+  }
+
+  let total = 0;
+  snapshot.forEach((docSnap) => {
+    const data = docSnap.data();
+    const rating = Number(data.rating) || 0;
+    total += rating;
+
+    const item = document.createElement("article");
+    item.className = "review-item";
+
+    const heading = document.createElement("div");
+    heading.className = "review-name";
+    heading.textContent = String(data.name || "Pengguna");
+
+    const stars = document.createElement("div");
+    stars.className = "stars";
+    stars.textContent = "★".repeat(Math.max(0, Math.min(5, rating))) +
+      "☆".repeat(5 - Math.max(0, Math.min(5, rating)));
+
+    const message = document.createElement("p");
+    message.className = "review-message";
+    message.textContent = String(data.message || "");
+
+    item.append(heading, stars, message);
+    reviewsBox.appendChild(item);
+  });
+
+  summaryBox.textContent =
+    "Rata-rata " + (total / snapshot.size).toFixed(1) +
+    " / 5 dari " + snapshot.size + " ulasan terbaru.";
+}
+
+try {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  submitButton.disabled = true;
+  statusBox.textContent = "Menghubungkan ke Firebase Authentication...";
+
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    submitButton.disabled = !user;
+    if (user) statusBox.textContent = "Terhubung. Kamu dapat mengirim ulasan.";
+  });
+
+  signInAnonymously(auth).catch((error) => {
+    showError("Gagal login anonim. Periksa Anonymous Authentication", error);
+  });
+
+  const reviewsQuery = query(
+    collection(db, "reviews"),
+    orderBy("createdAt", "desc"),
+    limit(50)
+  );
+
+  unsubscribeReviews = onSnapshot(
+    reviewsQuery,
+    renderReviews,
+    (error) => {
+      showError("Gagal membaca Firestore. Periksa Firestore Rules dan database", error);
+      reviewsBox.textContent = "Ulasan tidak dapat dimuat. Kode: " +
+        (error.code || "unknown");
+    }
+  );
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const name = nameInput.value.trim();
+    const rating = Number(ratingInput.value);
+    const message = messageInput.value.trim();
+
+    if (!currentUser) {
+      statusBox.textContent = "Authentication belum siap. Muat ulang halaman.";
+      return;
+    }
+    if (name.length < 2 || name.length > 30) {
+      statusBox.textContent = "Nama harus 2–30 karakter.";
+      return;
+    }
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+      statusBox.textContent = "Pilih rating 1 sampai 5.";
+      return;
+    }
+    if (message.length < 10 || message.length > 500) {
+      statusBox.textContent = "Ulasan harus 10–500 karakter.";
+      return;
+    }
+
+    submitButton.disabled = true;
+    statusBox.textContent = "Mengirim ulasan...";
+    try {
+      await addDoc(collection(db, "reviews"), {
+        name,
+        rating,
+        message,
+        createdAt: serverTimestamp()
+      });
+      form.reset();
+      statusBox.textContent = "Ulasan berhasil dikirim. Terima kasih!";
+    } catch (error) {
+      showError("Gagal mengirim ulasan. Periksa Firestore Rules", error);
+    } finally {
+      submitButton.disabled = !currentUser;
+    }
+  });
+
+  window.addEventListener("beforeunload", () => {
+    if (unsubscribeReviews) unsubscribeReviews();
+  });
+} catch (error) {
+  showError("Firebase gagal diinisialisasi. Periksa firebaseConfig", error);
+  submitButton.disabled = true;
+}
+</script>
+</body>
+</html>
