@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nev Launcher — Launcher Minecraft Java untuk Android</title>
+<meta name="description" content="Nev Launcher: launcher Minecraft Java untuk Android dengan tema Nev Lava, Futuristik, Cyber, Hero, dan Liquid Glass. Ringan, cepat, dan lengkap.">
+<meta name="theme-color" content="#120807">
+<style>
+:root{
+  --bg:#0d0605; --bg2:#160b09; --panel:#1d0f0c; --panel2:#26130f;
+  --line:#4a2018; --text:#fbefe9; --muted:#c3a69c;
+  --a1:#ff3d2e; --a2:#ff7a2f; --a3:#ffb25c;
+  --ok:#10b981; --radius:18px;
+  --grad:linear-gradient(135deg,var(--a1),var(--a2));
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 80% -10%,rgba(255,61,46,.18),transparent 60%),
+             radial-gradient(900px 500px at -10% 10%,rgba(255,122,47,.10),transparent 60%),var(--bg);
+  color:var(--text);line-height:1.65;min-height:100vh;
+}
+a{color:var(--a3);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--a2);outline-offset:3px;border-radius:6px}
+
+/* ===== Header ===== */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(13,6,5,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.bar{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.06em;color:var(--text);text-decoration:none}
+.logo{
+  width:34px;height:34px;border-radius:10px;background:var(--grad);display:grid;place-items:center;
+  font-weight:900;color:#1a0a07;font-size:18px;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset;
+}
+nav{margin-left:auto}
+nav ul{list-style:none;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+nav a{
+  display:block;padding:8px 12px;border-radius:999px;color:var(--muted);font-size:.92rem;font-weight:600;text-decoration:none;
+}
+nav a:hover{color:var(--text);background:var(--panel)}
+nav a[aria-current="page"]{color:#1a0a07;background:var(--grad)}
+.menu-btn{display:none;margin-left:auto;background:var(--panel);color:var(--text);border:1px solid var(--line);
+  border-radius:12px;padding:8px 12px;font-weight:700;cursor:pointer}
+
+@media (max-width:860px){
+  .menu-btn{display:block}
+  nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg2);border-bottom:1px solid var(--line);padding:10px 14px}
+  nav.open{display:block}
+  nav ul{flex-direction:column;align-items:stretch}
+  nav a{border-radius:12px}
+}
+
+/* ===== Layout ===== */
+main{max-width:1120px;margin:0 auto;padding:34px 18px 70px}
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;font-weight:900;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin-bottom:6px}
+h3{font-size:1.12rem;margin-bottom:6px}
+.lead{color:var(--muted);font-size:1.08rem;max-width:62ch;margin-top:12px}
+.kicker{color:var(--a2);font-weight:800;letter-spacing:.14em;font-size:.78rem;text-transform:uppercase;margin-bottom:10px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+section+section{margin-top:44px}
+.page-head{margin-bottom:28px}
+
+/* ===== Komponen ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;
+  font-weight:800;border:1px solid transparent;cursor:pointer;font-size:1rem;text-decoration:none;
+}
+.btn-primary{background:var(--grad);color:#1a0a07;box-shadow:0 8px 28px rgba(255,92,46,.28)}
+.btn-primary:hover{filter:brightness(1.07);text-decoration:none}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn-ghost:hover{background:var(--panel);text-decoration:none}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){.g3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.g2,.g3{grid-template-columns:1fr}}
+.card{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:var(--radius);padding:20px;
+}
+.card p{color:var(--muted);font-size:.96rem}
+.ico{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:12px;
+  background:rgba(255,92,46,.14);border:1px solid rgba(255,122,47,.35);font-size:1.25rem
+}
+.brand-logo{display:block;width:52px;height:52px;border-radius:14px;margin-bottom:12px;border:1px solid rgba(255,255,255,.12)}
+.chip{display:inline-block;padding:3px 11px;border-radius:999px;font-size:.78rem;font-weight:700;
+  background:rgba(255,122,47,.14);border:1px solid rgba(255,122,47,.35);color:var(--a3);margin:0 6px 6px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:34px}
+@media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+.stat b{display:block;font-size:1.6rem;font-weight:900}
+.stat span{color:var(--muted);font-size:.85rem}
+.hero{display:block;max-width:780px}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.mock{
+  border:1px solid var(--line);border-radius:26px;padding:16px;
+  background:linear-gradient(160deg,#2a110d,#120807);box-shadow:0 30px 70px rgba(0,0,0,.5);
+}
+.mock .top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.avatar{width:34px;height:34px;border-radius:8px;background:#6b4a36;border:2px solid #3d2a1e}
+.mock .play{background:var(--grad);color:#1a0a07;text-align:center;font-weight:900;border-radius:999px;padding:14px;margin:12px 0}
+.mock .ver{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:10px}
+.mock .ver i{width:30px;height:30px;border-radius:8px;background:#d9c9a8;display:block}
+.mock small{color:var(--muted)}
+
+/* Tema */
+.swatches{display:flex;gap:6px;margin-bottom:12px}
+.swatches i{width:26px;height:26px;border-radius:8px;border:1px solid rgba(255,255,255,.15)}
+
+/* Tabel & daftar */
+.timeline{position:relative;padding-left:22px;border-left:2px solid var(--line)}
+.release{position:relative;margin-bottom:30px}
+.release::before{content:"";position:absolute;left:-30px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 4px var(--bg)}
+.release h3{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.release ul{margin:10px 0 0 18px;color:var(--muted)}
+.release li{margin:4px 0}
+ul.ticks{list-style:none}
+ul.ticks li{padding-left:26px;position:relative;margin:8px 0;color:var(--muted)}
+ul.ticks li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:900}
+ol.steps{counter-reset:s;list-style:none}
+ol.steps li{counter-increment:s;position:relative;padding:14px 16px 14px 58px;margin:10px 0;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;color:var(--muted)}
+ol.steps li::before{content:counter(s);position:absolute;left:14px;top:12px;width:30px;height:30px;border-radius:50%;
+  background:var(--grad);color:#1a0a07;font-weight:900;display:grid;place-items:center}
+ol.steps b{color:var(--text)}
+.note{border-left:4px solid var(--a2);background:rgba(255,122,47,.08);padding:14px 16px;border-radius:0 14px 14px 0;color:var(--muted);margin:16px 0}
+.note b{color:var(--text)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.95rem}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--a3);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+td{color:var(--muted)}
+td:first-child{color:var(--text);font-weight:700}
+.tablewrap{overflow-x:auto}
+code{background:#2a1510;border:1px solid var(--line);padding:2px 7px;border-radius:7px;font-size:.88em;color:var(--a3)}
+
+
+/* ===== Rating & ulasan ===== */
+.rate-wrap{display:grid;grid-template-columns:260px 1fr;gap:16px}
+@media (max-width:760px){.rate-wrap{grid-template-columns:1fr}}
+.avg{text-align:center}
+.avg b{display:block;font-size:3rem;font-weight:900;line-height:1.1}
+.stars{color:#ffb25c;letter-spacing:2px;font-size:1.15rem;white-space:nowrap}
+.stars .off{color:#5b3a30}
+.bars{margin-top:14px;text-align:left}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);margin:5px 0}
+.bar-row .track{flex:1;height:8px;border-radius:99px;background:#2d1813;overflow:hidden}
+.bar-row .fill{display:block;height:100%;background:var(--grad);width:0}
+.review{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.review:last-child{border-bottom:0}
+.review img{width:40px;height:40px;border-radius:50%;flex:none;background:var(--panel2)}
+.review .who{font-weight:700;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.review .who small{color:var(--muted);font-weight:400}
+.review p{color:var(--muted);white-space:pre-wrap;word-break:break-word;margin-top:4px}
+.empty{color:var(--muted);text-align:center;padding:22px 8px}
+.starpick{display:inline-flex;flex-direction:row-reverse;gap:2px}
+.starpick input{position:absolute;opacity:0;pointer-events:none}
+.starpick label{font-size:2rem;color:#5b3a30;cursor:pointer;line-height:1;padding:0 2px}
+.starpick label:hover,.starpick label:hover~label,.starpick input:checked~label{color:#ffb25c}
+.starpick input:focus-visible+label{outline:2px solid var(--a2);border-radius:6px}
+textarea,.field{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);
+  padding:12px;font:inherit;resize:vertical;min-height:110px}
+.formrow{margin-top:12px}
+.hint{font-size:.82rem;color:var(--muted);margin-top:8px}
+
+/* FAQ */
+details{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:10px 0;padding:0 16px}
+summary{cursor:pointer;font-weight:700;padding:15px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--a2);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);padding:0 0 16px}
+
+footer{border-top:1px solid var(--line);padding:26px 18px;text-align:center;color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="brand" href="#beranda"><span class="logo" aria-hidden="true">N</span> NEV LAUNCHER</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav id="nav" aria-label="Navigasi utama">
+      <ul>
+        <li><a href="#beranda" data-page="beranda">Beranda</a></li>
+        <li><a href="#download" data-page="download">Download</a></li>
+        <li><a href="#fitur" data-page="fitur">Fitur</a></li>
+        <li><a href="#changelog" data-page="changelog">Changelog</a></li>
+        <li><a href="#performance" data-page="performance">Performance</a></li>
+        <li><a href="#community" data-page="community">Community</a></li>
+        <li><a href="#dokumentasi" data-page="dokumentasi">Dokumentasi</a></li>
+        <li><a href="#faq" data-page="faq">FAQ</a></li>
+        <li><a href="#tentang" data-page="tentang">Tentang</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= BERANDA ================= -->
+<div class="page" id="beranda">
+  <div class="hero">
+    <div>
+      <p class="kicker">Launcher Minecraft Java untuk Android</p>
+      <h1>Main Minecraft Java di HP, <span class="grad-text">ringan dan cantik.</span></h1>
+      <p class="lead">Nev Launcher membawa Minecraft Java Edition ke Android dengan tampilan modern, lima tema berkarakter, pengunduh mod dan modpack bawaan, serta kontrol layar sentuh yang bisa disesuaikan.</p>
+      <div class="row">
+        <a class="btn btn-primary" href="https://github.com/NestMCC/Nev-Launcher/releases/download/v5.0.0/NevLauncher-5.0.0.apk" download>⬇ Unduh APK</a>
+        <a class="btn btn-ghost" href="#fitur">Lihat fitur</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>5.0.0</b><span>Versi terbaru</span></div>
+        <div class="stat"><b>5</b><span>Tema tampilan</span></div>
+        <div class="stat"><b class="dl-total">…</b><span>Total unduhan (semua versi)</span></div>
+        <div class="stat"><b>Android</b><span>HP &amp; tablet</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="page-head"><p class="kicker">Kenapa Nev Launcher</p><h2>Dibuat supaya main di HP terasa enak</h2></div>
+    <div class="grid g3">
+      <div class="card"><div class="ico">⚡</div><h3>Ringan &amp; lancar</h3><p>Antarmuka dioptimalkan agar scroll dan pindah menu tetap mulus, termasuk di HP berspesifikasi rendah.</p></div>
+      <div class="card"><div class="ico">🎨</div><h3>Banyak tema</h3><p>Nev Lava, Futuristik, Cyber, Hero, dan Liquid Glass. Pilih gaya yang paling cocok denganmu.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>Unduh mod langsung</h3><p>Cari dan pasang mod, modpack, shader, dan paket sumber daya lengkap dengan dependensinya.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= DOWNLOAD ================= -->
+<div class="page" id="download">
+  <div class="page-head">
+    <p class="kicker">Download</p>
+    <h1>Unduh <span class="grad-text">APK terbaru</span></h1>
+    <p class="lead">Versi saat ini <b>5.0.0</b>. Satu klik, APK langsung terunduh.</p>
+  </div>
+
+  <div class="card">
+    <span class="chip">v5.0.0</span><span class="chip">Android</span><span class="chip">±357 MB</span><span class="chip"><span class="dl-total">…</span> unduhan</span>
+    <h3>NevLauncher-5.0.0.apk</h3>
+    <p>Satu APK untuk semua perangkat Android. Tekan tombol di bawah dan unduhan langsung dimulai.</p>
+    <div class="row"><a class="btn btn-primary" href="https://github.com/NestMCC/Nev-Launcher/releases/download/v5.0.0/NevLauncher-5.0.0.apk" download>⬇ Unduh Nev Launcher</a></div>
+  </div>
+
+  <section>
+    <h2>Persyaratan</h2>
+    <div class="card">
+      <ul class="ticks">
+        <li>Android dengan dukungan OpenGL ES 3.0 atau lebih baru.</li>
+        <li>Ruang penyimpanan yang cukup: APK ±357 MB, belum termasuk game, mod, dan dunia.</li>
+        <li>Izin <b>instal dari sumber tidak dikenal</b> diaktifkan untuk peramban/pengelola berkasmu.</li>
+        <li>Akun Minecraft untuk mode online, atau mode offline untuk bermain tanpa akun.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cara memasang</h2>
+    <ol class="steps">
+      <li><b>Unduh APK</b> lewat tombol di atas.</li>
+      <li><b>Buka berkas APK</b>, lalu izinkan instal dari sumber ini bila diminta.</li>
+      <li><b>Pasang</b> dan buka Nev Launcher. Komponen yang dibutuhkan diunduh otomatis di latar belakang.</li>
+      <li><b>Tambahkan akun</b> (Microsoft, Ely.by, atau Offline), pasang versi Minecraft dari menu Unduh, lalu tekan <b>Main</b>.</li>
+    </ol>
+    <div class="note"><b>Tips:</b> unduh hanya dari situs ini atau halaman rilis resmi di GitHub agar APK-mu aman dari berkas yang sudah diubah pihak lain.</div>
+  </section>
+</div>
+
+<!-- ================= FITUR ================= -->
+<div class="page" id="fitur">
+  <div class="page-head">
+    <p class="kicker">Fitur</p>
+    <h1>Semua yang ada di <span class="grad-text">Nev Launcher</span></h1>
+    <p class="lead">Dari tampilan sampai kontrol, semuanya dirancang untuk bermain Minecraft Java di layar sentuh.</p>
+  </div>
+
+  <h2>Tampilan &amp; tema</h2>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><div class="swatches"><i style="background:#ff4a2e"></i><i style="background:#ff7a2f"></i><i style="background:#2a110d"></i></div><h3>Nev Lava</h3><p>Tema bawaan dengan aksen merah-oranye dan gradasi yang hangat.</p></div>
+    <div class="card"><div class="swatches"><i style="background:#f5b840"></i><i style="background:#ffd878"></i><i style="background:#0e1738"></i></div><h3>Futuristik</h3><p>Emas di atas navy, panel kaca bulat berbingkai emas, dengan menu samping berlabel.</p></div>
+    <div class="card"><div class="swatches"><i style="background:#00e5ff"></i><i style="background:#7c4dff"></i><i style="background:#06121a"></i></div><h3>Cyber</h3><p>Gaya siber dengan sudut terpotong dan tata letak tersendiri.</p></div>
+    <div class="card"><div class="swatches"><i style="background:#fff"></i><i style="background:#999"></i><i style="background:#000"></i></div><h3>Hero</h3><p>Hitam-putih dengan gaya kotak murni dan daftar bergaya baris lebar.</p></div>
+    <div class="card"><div class="swatches"><i style="background:#fff"></i><i style="background:#dde3ea"></i><i style="background:#1a1d21"></i></div><h3>Liquid Glass</h3><p>Tema warna serba putih berefek kaca bening yang bisa dipadukan dengan gaya desain apa pun.</p></div>
+    <div class="card"><div class="ico">🎛</div><h3>Warna lain</h3><p>Pilihan warna tambahan, warna dinamis, dan warna kustom, plus latar gambar sendiri.</p></div>
+  </div>
+
+  <section>
+    <h2>Unduhan &amp; konten</h2>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><div class="ico">🧩</div><h3>Mod &amp; modpack</h3><p>Cari dan pasang mod serta modpack, dengan dependensi wajib ikut terpasang otomatis.</p></div>
+      <div class="card"><div class="ico">🖼</div><h3>Shader &amp; paket sumber daya</h3><p>Unduh shader, paket sumber daya, dan dunia, lalu langsung tandai yang sudah terpasang.</p></div>
+      <div class="card"><div class="ico">🗂</div><h3>Kartu seri versi</h3><p>Daftar versi dikelompokkan per seri, dengan pilihan loader dan pemasangan cepat.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bermain</h2>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><div class="ico">🎮</div><h3>Kontrol sentuh</h3><p>Tata letak bawaan, editor kontrol, dan kontrol yang mengikuti tema launcher.</p></div>
+      <div class="card"><div class="ico">🌐</div><h3>Server Hub</h3><p>Cari server berdasarkan lokasi, jumlah pemain online, dan mode game, plus daftar favorit.</p></div>
+      <div class="card"><div class="ico">👥</div><h3>Multiplayer</h3><p>Bermain bersama lewat jaringan P2P dengan panduan host dan tamu.</p></div>
+      <div class="card"><div class="ico">📊</div><h3>Overlay &amp; menu game</h3><p>Overlay FPS, koordinat, dan arah, serta Menu Game satu panel untuk pengaturan cepat.</p></div>
+      <div class="card"><div class="ico">⏱</div><h3>Waktu bermain</h3><p>Statistik waktu bermain per hari di beranda.</p></div>
+      <div class="card"><div class="ico">🎵</div><h3>Musik</h3><p>Mini player musik tanpa harus keluar dari launcher.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Alat bantu</h2>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><div class="ico">🎥</div><h3>Perekaman layar</h3><p>Rekam gameplay dengan suara game dan mikrofon, termasuk peredam bising.</p></div>
+      <div class="card"><div class="ico">💾</div><h3>Backup dunia otomatis</h3><p>Dunia dicadangkan saat keluar dan tiap 30 menit, bisa dikelola dari tab Backup.</p></div>
+      <div class="card"><div class="ico">🩺</div><h3>Analisis crash</h3><p>Aturan offline menjelaskan penyebab crash. Analisis AI bersifat opsional dengan API key milikmu sendiri.</p></div>
+      <div class="card"><div class="ico">📁</div><h3>Manajer berkas</h3><p>Jelajahi folder data langsung dari launcher, dengan tampilan berkas yang rapi.</p></div>
+      <div class="card"><div class="ico">👤</div><h3>Banyak akun</h3><p>Akun Microsoft, Ely.by, dan Offline, lengkap dengan lemari pakaian skin.</p></div>
+      <div class="card"><div class="ico">🛡</div><h3>Pengaturan aman</h3><p>Pengaturan dicadangkan saat versi berubah sehingga update tidak mereset pilihanmu.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CHANGELOG ================= -->
+<div class="page" id="changelog">
+  <div class="page-head">
+    <p class="kicker">Changelog</p>
+    <h1>Riwayat <span class="grad-text">pembaruan</span></h1>
+    <p class="lead">Catatan perubahan dari rilis terbaru ke yang lebih lama.</p>
+  </div>
+  <div class="timeline">
+    <div class="release">
+      <h3>5.0.0 <span class="chip">Terbaru</span></h3>
+      <ul>
+        <li>Liquid Glass kini menjadi tema warna serba putih yang berlaku di atas semua gaya desain.</li>
+        <li>Optimasi antarmuka: efek glow bayangan dimatikan dan animasi putar tepi kaca dihentikan agar scroll dan pindah menu lebih mulus.</li>
+        <li>Ukuran APK diperkecil (gambar WebP, metadata pustaka tak terpakai dibuang).</li>
+        <li>Popup progres unduhan dipindah ke tengah layar untuk mod, paket sumber daya, dunia, dan shader.</li>
+        <li>Tanda “terpasang” di daftar mod muncul otomatis setelah unduhan selesai.</li>
+        <li>Pasang cepat dari daftar: tombol “+ INSTAL” langsung mengunduh mod, shader, dan paket sumber daya.</li>
+        <li>Pemilihan loader (Forge, NeoForge, Fabric, dan lainnya) langsung dari daftar versi game.</li>
+        <li>Beranda Nev: kartu akun lebih ringkas dan versi terpilih bisa diklik ke daftar versi.</li>
+        <li>Perbaikan tampilan gradasi kartu di tema Nev, Futuristik, dan Liquid Glass.</li>
+      </ul>
+    </div>
+    <div class="release">
+      <h3>4.0.0</h3>
+      <ul>
+        <li>Tema baru: Futuristik, Cyber, Hero, dan Liquid.</li>
+        <li>Beranda Dashboard dengan salam, statistik waktu bermain, dan daftar paket &amp; versi.</li>
+        <li>Backup dunia otomatis dan analisis crash.</li>
+        <li>Installer komponen di latar belakang dan layar loading bermerek.</li>
+        <li>Cache verifikasi file dan cache pemindaian mod untuk memulai game lebih cepat.</li>
+        <li>Dukungan akun Ely.by dan kontrol yang mengikuti tema.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note"><b>Catatan:</b> riwayat lengkap tersedia di halaman rilis GitHub. Perbarui bagian ini setiap kali ada versi baru.</div>
+</div>
+
+<!-- ================= PERFORMANCE ================= -->
+<div class="page" id="performance">
+  <div class="page-head">
+    <p class="kicker">Performance</p>
+    <h1>Optimasi <span class="grad-text">Minecraft di HP</span></h1>
+    <p class="lead">Informasi tentang bagaimana Nev Launcher menjaga game tetap cepat dan apa yang bisa kamu setel sendiri.</p>
+  </div>
+
+  <div class="grid g3">
+    <div class="card"><div class="ico">🚀</div><h3>Start game lebih cepat</h3><p>Cache verifikasi file dan cache pemindaian mod mengurangi pekerjaan berulang setiap kali game dijalankan.</p></div>
+    <div class="card"><div class="ico">🧠</div><h3>Launcher hemat</h3><p>Efek berat di antarmuka dikurangi agar launcher tetap lancar di HP berspesifikasi rendah.</p></div>
+    <div class="card"><div class="ico">📦</div><h3>APK ringkas</h3><p>Gambar dan berkas pendukung dikompres agar APK tidak lebih besar dari yang perlu.</p></div>
+  </div>
+
+  <section>
+    <h2>Renderer &amp; driver grafis</h2>
+    <p class="lead" style="margin-bottom:12px">Pengaturan Renderer dan Driver Vulkan ada di pengaturan launcher. Mencoba beberapa kombinasi sering menjadi cara terbaik menemukan yang paling stabil di HP-mu.</p>
+    <div class="tablewrap card">
+      <table>
+        <thead><tr><th>Pilihan</th><th>Fungsi</th><th>Saran</th></tr></thead>
+        <tbody>
+          <tr><td>MobileGlues</td><td>Lapisan terjemahan OpenGL modern untuk perangkat mobile (OpenGL 4.0, versi 1.17+).</td><td>Pilihan umum untuk versi Minecraft baru.</td></tr>
+          <tr><td>Driver Vulkan (mis. Turnip)</td><td>Driver grafis alternatif untuk chip yang mendukungnya.</td><td>Coba jika grafis bermasalah atau FPS rendah.</td></tr>
+          <tr><td>API Grafis</td><td>Memilih API grafis yang dipakai Minecraft 26.2 ke atas.</td><td>Mulai dari OpenGL, ubah bila perlu.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tips agar FPS lebih tinggi</h2>
+    <div class="card">
+      <ul class="ticks">
+        <li>Gunakan modpack ringan seperti <b>Fabulously Optimized</b> atau pasang mod optimasi (mis. Sodium, Lithium, FerriteCore) lewat pengunduh mod.</li>
+        <li>Turunkan jarak pandang (render distance) dan jarak simulasi di dalam game.</li>
+        <li>Hindari shader berat di HP yang panas atau berspesifikasi rendah.</li>
+        <li>Tutup aplikasi lain agar RAM tersedia lebih banyak untuk game.</li>
+        <li>Alokasikan memori secukupnya: terlalu besar justru bisa membuat HP lambat.</li>
+      </ul>
+    </div>
+    <div class="note"><b>Catatan:</b> hasil tiap perangkat berbeda-beda. Gunakan overlay FPS bawaan untuk membandingkan pengaturan yang kamu coba.</div>
+  </section>
+</div>
+
+<!-- ================= COMMUNITY ================= -->
+<div class="page" id="community">
+  <div class="page-head">
+    <p class="kicker">Community</p>
+    <h1>Gabung <span class="grad-text">komunitas</span></h1>
+    <p class="lead">Tanya, bagikan, dan ikuti kabar terbaru bersama pengguna Nev Launcher lainnya.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <img class="brand-logo" src="data:image/webp;base64,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" alt="Logo Discord" width="52" height="52"><h3>Discord</h3>
+      <p>Ngobrol, minta bantuan, dan lihat pengumuman rilis.</p>
+      <div class="row"><a class="btn btn-primary" href="https://discord.gg/yYKDbTYj8z" target="_blank" rel="noopener">Masuk Discord</a></div>
+    </div>
+    <div class="card">
+      <img class="brand-logo" src="data:image/webp;base64,UklGRrIIAABXRUJQVlA4IKYIAADwJwCdASqAAIAAPjEWikOiISESiZ20IAMEsgCDAPwAlQP8B+IGtx9N/FL2T6Y/OvwF+Qfwr6WY+vUx+T/sv7of2z3zeoDzAP0t/yH9u/dD+u9wD9mfUB+rv+q/4HvAehf/GeoB/cP7R6OXsH+gT+uvpcftb8HX7Pfs/8B364f9nNM+1X+99Hh7fkeWEPuX+v4S9r3/Gb1mAD6lcTWlB+OefL0A/prz6fSX7L/Ab+u3pVewz0cf2kMC9CSYp462Vud6RIIfuEW2fe00grz18iJSnJV+8biCREmVz6J9btfYNabE+oviiATMOeWp8YmO0IEp4fhHZsWqOPaWAVh4DSmb1iFEijeFkdymU37ep4NOaJ93FkzHKKrbzGtq3427XyN8IsUbb/2UKSe+ffNogHqG+7XisCCIGU7/9qQpQRXotslawyTr+RnAAP7s4yb1SbpvP6PV9YvesXuqNAAegwcmn6KjbtW+iMOmkFBDcGH7l7QYZpB4JsABFawWaJr+V20JqF6fMc38cLaWcxhDCmq+oddZpH0ZUTQkyJtzT9BAWcaBC5VUSxcRs1zTl4sw3yQ21h4FsulN8x6Ua8ZC6dLR5udXXqYAnv+tdnTGl6dTEuqAuyy6bxtMykI+sv/lyURiC6NcxsJilunlg1/b8cIvu+PaqLl2O8/DBT+aYKHRXcErs/PRBLfWkPWPJnk8t0mQWo6Cy+WGSJ3i1EwvZK3+uTt/SJRQpXy3mTV2LPjXq5uBWCigCkvD/knjyqNSPDRQ3lixYgZKVGnyX4wvTQC0cJFLDv2kDVQLq+IaX6U4a1HuSOaR9tNMlNhA7Y6Ro0qOfn7wr5Bgk1MTJRUoXpslEXDFeMFMrz6I8+OCQBfR14QWjCLW9ABpanO+RqPfknfpgdHGGv5XDHHMYUmvq9sxEq5oa9XArekYEHaCWUhpky31k1yoUH9DrtgsY24NqsGjNrxLxclWnraOa4wNFKJ3Nz7vSibustQX43nMYp/3/5Nv2AfUNiSx4e+RcDgeunYktJAvQJHZe4lkPxDoFPMO47kgU7rFQRLMByxCJwPryCv9M1BSLEm8Us8ADz+UASHvIoDwUiVLs84PI0wBcr1bjMh/6sVQikGhyIv6DMJ2rdv/Fe7EEa8vTHkIWKNyxFRdvTLC6dWpyq5i0nRKxLtK8qAWyXh0B7IPQhf7TpVNm1ECNXgOWRpX7veUyWYTXtnzNAgSrbw8b5IzE64qWZkyb1aaKRiYsFAzlL+zmwOqdwbRqiUio2E68uRLrepz3/sd+2R0IAQA4bQ+X9qFOrPq9kvr+V42rM4lgBeLqB+x9nQxxzVBYAiRY0T0Bbb08htPPhjaJ3qOrYfL7+SP43WW4S8XBzcDZIt6+uqIelEGXJG3OQ3GHd5sd1i07fqIGRR6EGBRHkLV1u7sfe5RpfPlJaM5OEOFg9um//42POwK6IURf8+J2pPtTSLV6gw4wqlOfa39TKdW5rTDoykxG+8H4dD4PiiRd62Bz1HYJc7xN5F0kaBm5519nnQ1NYWwQmAd3aH8QF4GPh4h+H3HF1lRcywOffiKXfmRArLBUnbFg6YV4jXPEiesk6/d1Tio5JhryZI8duape3DvqQE3WJNJ0CM4PxH8trKzYFt73jLfEC0/eMgworJi/gQ1pXjdODXfVuNh3/vl81jwnzN10vrEBl28xjBnn7CO+h23Bec5HLX05+ToOX9axFwYpcrm+fFRfkd7JGk/oR/XxAYZo53LdLqYSafsrjvPcgNXSA80ffxOIOuhsqt/PIPVoalv4/g3cLIFjAzJkRENVnHrDwN2jcZIWT7kcudO+xaY3MSlZ+2Dh3ZPRw2p6YJbi9/Gqs0ZtrKk/Mu7W21XRNi1gTg7t3RvNkzz+rf/Pr4sKaDypcTzuieFh1oy43ht0Fw3NLMMWRzbEkcCHnuieAdl8yOnkprkmKYB6x7mCumfutJaniar5pmACYddwPtv9rrk7aMpPtugKxVvXxm9W4bvxInus6c3oKHtkaMdMfUjdpHPP9ylyO3xFs/V5dEJrcLnlwvY1wjFVmdu9A6+27CLQFDBS3cq+KGtqQg9hw82AlT/wU7632DZS4XrSEAoAt5i6o6S4Tyn41+HfO8Pn33sIinojrPLm0EDzFO1nDVC4r3W1ZygdU2Gmp4I+qeJP4kXyl5GGK4g0ID0UK6ncMkkK2i/ObV9sF1QQ9zUQSTw+mxhvxPivBiqrzUdKZ7d9O2rbX0xfKLHuT35/228jUdfbk8XGbscCJ2yUvD2h8+9i/nfV55yrQZGGWksZTwH0LX+T37RCVA1v7a5T1cXOs9985HFZG/YyqR6A4OQOluhEUXQWgmXzpNz0NmWHY5s9ViewYUSYlPUsnmlzQcH2g5/veUjb1U1If4IosoQRKTUgHxQNW81kX3Bp7bXDa/wYzKVEJqB1WAxcmNjTkv1MyJpOkviswNxiTAc/X+tGhpdn3k4EYzbCdWedE1Rxyx0dN/aPpzjZXXoPFGq4F7u0wiJX3YMIelBa3ZokJVi8wo+MuDIXKlzWl2OzNXxWLuyt0jClllrNAhusUu4O4wivrMIUQ9cHvXplQJeLgGiS8auQE2cgpRCHOAXju4Ug8mOPDwxco3luSjPIHdaEG23qG9vQOHLg/Bm4ad04+vZnoLwYkrDnnyKXG1HEornem69fB7VF0pPXTy60Yku/hx4LhfUIBysqg7zfu97nSd8j8aeqNkCChLJXazgMWdx2uyKlcuqPKDD7l+V8fLdyotgTxOz1qnE5rlQwFftet4CyRw1jqAUiLlkTiKNV2qQsCvDm/dzO97WTjDV9yW724HJXd53jH5q548dNOtm4kRQXAJEZqxLo/6oZUgmfiC+9dh5iZvLyAC0Hz9d3Kj9VwaB2wKVhrcuPTpOxyfqWKXOZS6RExBA03DMmmtTpIem22xWw3mfj+E2TAAAAAA=" alt="Logo WhatsApp" width="52" height="52"><h3>Saluran WhatsApp</h3>
+      <p>Ikuti saluran untuk info rilis dan pengumuman terbaru.</p>
+      <div class="row"><a class="btn btn-primary" href="https://whatsapp.com/channel/0029VbDTPs4HgZWicPs7aR1c" target="_blank" rel="noopener">Ikuti Saluran</a></div>
+    </div>
+    <div class="card">
+      <img class="brand-logo" src="data:image/webp;base64,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" alt="Logo WhatsApp" width="52" height="52"><h3>Grup WhatsApp</h3>
+      <p>Ngobrol dan tanya jawab langsung bersama sesama pengguna.</p>
+      <div class="row"><a class="btn btn-primary" href="https://chat.whatsapp.com/EOt5lZM1XVPFlqB0TFsqGW?s=cl&amp;p=a&amp;iam=2" target="_blank" rel="noopener">Gabung Grup</a></div>
+    </div>
+    <div class="card">
+      <img class="brand-logo" src="data:image/webp;base64,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" alt="Logo GitHub" width="52" height="52"><h3>GitHub</h3>
+      <p>Lihat kode, laporkan bug, dan unduh rilis terbaru.</p>
+      <div class="row"><a class="btn btn-ghost" href="https://github.com/NestMCC/Nev-Launcher" target="_blank" rel="noopener">Buka GitHub</a></div>
+    </div>
+    <div class="card">
+      <div class="ico">❤</div><h3>Dukung Nev Launcher</h3>
+      <p>Launcher ini gratis. Dukunganmu membantu pengembangan terus berjalan.</p>
+      <div class="row"><a class="btn btn-ghost" href="#tentang">Cara mendukung</a></div>
+    </div>
+  </div>
+  <section id="ulasan">
+    <h2>Rating &amp; ulasan</h2>
+    <p class="lead" style="margin-bottom:14px">Ulasan dari pengguna Nev Launcher. Ulasan disimpan sebagai issue publik di GitHub, jadi kamu perlu akun GitHub untuk menulis.</p>
+    <div class="rate-wrap">
+      <div class="card avg" aria-live="polite">
+        <b id="avgNum">–</b>
+        <div class="stars" id="avgStars" aria-hidden="true">☆☆☆☆☆</div>
+        <small style="color:var(--muted)" id="avgCount">Memuat…</small>
+        <div class="bars" id="bars"></div>
+      </div>
+      <div class="card">
+        <h3>Tulis ulasan</h3>
+        <form id="reviewForm">
+          <div class="starpick" role="radiogroup" aria-label="Rating">
+            <input type="radio" name="rate" id="r5" value="5"><label for="r5" title="5 bintang">★</label>
+            <input type="radio" name="rate" id="r4" value="4"><label for="r4" title="4 bintang">★</label>
+            <input type="radio" name="rate" id="r3" value="3"><label for="r3" title="3 bintang">★</label>
+            <input type="radio" name="rate" id="r2" value="2"><label for="r2" title="2 bintang">★</label>
+            <input type="radio" name="rate" id="r1" value="1"><label for="r1" title="1 bintang">★</label>
+          </div>
+          <div class="formrow"><textarea id="revText" maxlength="1500" placeholder="Ceritakan pengalamanmu memakai Nev Launcher…" aria-label="Isi ulasan"></textarea></div>
+          <div class="row" style="margin-top:12px"><button class="btn btn-primary" type="submit">Kirim lewat GitHub</button></div>
+          <p class="hint" id="formMsg">Tombol ini membuka GitHub dengan ulasan yang sudah terisi. Tekan “Submit new issue” di sana untuk mengirim.</p>
+        </form>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Ulasan terbaru</h3>
+      <div id="reviewList"><div class="empty">Memuat ulasan…</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Aturan singkat komunitas</h2>
+    <div class="card">
+      <ul class="ticks">
+        <li>Saling menghormati dan gunakan bahasa yang sopan.</li>
+        <li>Sertakan versi launcher, versi Minecraft, dan log saat melaporkan masalah.</li>
+        <li>Jangan membagikan APK dari sumber tidak resmi.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<!-- ================= DOKUMENTASI ================= -->
+<div class="page" id="dokumentasi">
+  <div class="page-head">
+    <p class="kicker">Dokumentasi</p>
+    <h1>Panduan <span class="grad-text">penggunaan</span></h1>
+    <p class="lead">Langkah-langkah dasar dari pemasangan sampai mulai bermain.</p>
+  </div>
+
+  <section>
+    <h2>1. Menambahkan akun</h2>
+    <ol class="steps">
+      <li>Buka menu <b>Beranda</b>, lalu ketuk kartu akun.</li>
+      <li>Pilih <b>Microsoft</b>, <b>Ely.by</b>, atau <b>Offline</b>.</li>
+      <li>Ikuti proses masuk. Untuk Offline, cukup isi nama pemain.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>2. Memasang versi Minecraft</h2>
+    <ol class="steps">
+      <li>Buka menu <b>Unduh</b> dan pilih seri versi yang diinginkan.</li>
+      <li>Pilih loader (Vanilla, Fabric, Forge, NeoForge, dan lainnya) lalu ketuk unduh.</li>
+      <li>Tunggu progres selesai, lalu versi baru muncul di daftar <b>Paket &amp; Versi</b>.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>3. Memasang mod, shader, dan paket sumber daya</h2>
+    <ol class="steps">
+      <li>Pilih versi yang akan dimodifikasi di beranda.</li>
+      <li>Buka menu <b>Unduh</b> pada bagian mod, shader, atau paket sumber daya.</li>
+      <li>Cari, lalu ketuk <b>+ INSTAL</b>. Dependensi wajib dipasang otomatis.</li>
+      <li>Tanda centang muncul setelah pemasangan selesai.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>4. Mengatur tampilan</h2>
+    <p class="lead" style="margin-bottom:10px">Buka <b>Pengaturan → Tampilan</b> untuk memilih tema dan gaya desain.</p>
+    <div class="card">
+      <ul class="ticks">
+        <li>Pilih kartu tema: Nev Lava, Futuristik, Cyber, Hero, atau Liquid Glass.</li>
+        <li>Liquid Glass bisa dipadukan dengan gaya desain apa pun tanpa mengubah tata letak.</li>
+        <li>Atur latar gambar, buram latar, dan skala antarmuka sesuai selera.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Mengelola versi &amp; backup</h2>
+    <ul class="ticks card">
+      <li>Ketuk versi terpilih di beranda untuk membuka halaman daftar versi.</li>
+      <li>Di Kelola Versi tersedia ganti nama, ekspor modpack, log proses, analisis crash, dan folder cepat.</li>
+      <li>Tab <b>Backup</b> berisi cadangan dunia otomatis yang bisa dipulihkan.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6. Kontrol</h2>
+    <ul class="ticks card">
+      <li>Gunakan tata letak bawaan atau ubah di <b>Editor Kontrol</b>.</li>
+      <li>Aktifkan opsi agar kontrol mengikuti warna tema launcher.</li>
+      <li>Buka <b>Menu Game</b> saat bermain untuk mouse, gamepad, gestur, giroskop, dan perekaman.</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ================= FAQ ================= -->
+<div class="page" id="faq">
+  <div class="page-head">
+    <p class="kicker">FAQ</p>
+    <h1>Pertanyaan <span class="grad-text">umum</span></h1>
+  </div>
+
+  <details><summary>Apakah Nev Launcher gratis?</summary><p>Ya, Nev Launcher gratis. Dukungan sukarela dari pengguna membantu pengembangan.</p></details>
+  <details><summary>Apakah saya butuh akun Minecraft asli?</summary><p>Tidak wajib. Kamu bisa bermain dengan akun Offline. Untuk bermain di server online yang mewajibkan akun resmi, gunakan akun Microsoft. Dukungan Ely.by juga tersedia.</p></details>
+  <details><summary>Nev Launcher dibuat dari apa?</summary><p>Nev Launcher adalah turunan dari Zalith Launcher 2, yang berbasis PojavLauncher, dengan tampilan dan fitur tambahan.</p></details>
+  <details><summary>Game crash, apa yang harus dilakukan?</summary><p>Buka Kelola Versi lalu pilih <b>Analisis crash</b>. Launcher menjelaskan kemungkinan penyebab. Kamu juga bisa membuka log proses dan membagikannya di komunitas.</p></details>
+  <details><summary>Bagaimana cara memasang mod?</summary><p>Buka menu Unduh bagian mod, cari modnya, lalu ketuk <b>+ INSTAL</b>. Dependensi wajib ikut terpasang otomatis. Pastikan loader mod sama dengan loader versi yang kamu pakai.</p></details>
+  <details><summary>Apakah dunia saya aman?</summary><p>Launcher mencadangkan dunia otomatis saat keluar game dan tiap 30 menit. Cadangan ada di tab Backup pada Kelola Versi.</p></details>
+  <details><summary>FPS rendah di HP saya, apa solusinya?</summary><p>Lihat halaman <a href="#performance">Performance</a>: pakai modpack ringan, turunkan render distance, coba renderer atau driver lain, dan tutup aplikasi lain saat bermain.</p></details>
+  <details><summary>Apakah pengaturan hilang setelah update?</summary><p>Tidak. Launcher mencadangkan pengaturan saat versi berubah dan memulihkannya jika kosong.</p></details>
+  <details><summary>Apakah Nev Launcher berafiliasi dengan Mojang atau Microsoft?</summary><p>Tidak. Nev Launcher adalah proyek independen dan tidak berafiliasi dengan Mojang Studios, Microsoft, atau Minecraft. Minecraft adalah merek dagang Mojang Studios.</p></details>
+</div>
+
+<!-- ================= TENTANG ================= -->
+<div class="page" id="tentang">
+  <div class="page-head">
+    <p class="kicker">Tentang</p>
+    <h1>Informasi <span class="grad-text">pengembang</span></h1>
+    <p class="lead">Nev Launcher dikembangkan oleh NestMC dan dibuat sepenuhnya dari HP.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Pengembang</h3>
+      <p>NestMC adalah pembuat dan pemelihara Nev Launcher. Masukan, laporan bug, dan ide fitur sangat disambut.</p>
+      <div class="row"><a class="btn btn-ghost" href="https://github.com/NestMCC" target="_blank" rel="noopener">Profil GitHub</a></div>
+    </div>
+    <div class="card">
+      <h3>Dukung Nev Launcher</h3>
+      <p>Jika launcher ini berguna, kamu bisa mendukung pengembangannya lewat menu <b>Donasi</b> di dalam aplikasi. Berbagi ke teman juga sangat membantu.</p>
+    </div>
+  </div>
+  <section>
+    <h2>Kredit</h2>
+    <div class="card">
+      <ul class="ticks">
+        <li><b>Zalith Launcher 2</b> sebagai dasar proyek, yang berbasis <b>PojavLauncher</b>.</li>
+        <li>Komunitas dan para pembuat mod, shader, serta paket sumber daya.</li>
+        <li>NestMC untuk pengembangan, tampilan, dan fitur tambahan Nev Launcher.</li>
+      </ul>
+    </div>
+    <div class="note"><b>Pernyataan:</b> Nev Launcher bukan produk resmi Minecraft dan tidak berafiliasi dengan Mojang Studios atau Microsoft.</div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  © <span id="yr"></span> Nev Launcher · Dibuat oleh NestMC · Bukan produk resmi Minecraft.
+</footer>
+
+<script>
+(function(){
+  var pages=["beranda","download","fitur","changelog","performance","community","dokumentasi","faq","tentang"];
+  var links=document.querySelectorAll("nav a");
+  var nav=document.getElementById("nav"), btn=document.getElementById("menuBtn");
+  var titles={beranda:"Beranda",download:"Download",fitur:"Fitur",changelog:"Changelog",performance:"Performance",community:"Community",dokumentasi:"Dokumentasi",faq:"FAQ",tentang:"Tentang"};
+
+  function show(){
+    var id=(location.hash||"#beranda").slice(1);
+    if(pages.indexOf(id)<0) id="beranda";
+    pages.forEach(function(p){document.getElementById(p).classList.toggle("active",p===id)});
+    links.forEach(function(a){
+      if(a.dataset.page===id) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+    });
+    document.title=(id==="beranda"?"Nev Launcher — Launcher Minecraft Java untuk Android":titles[id]+" · Nev Launcher");
+    nav.classList.remove("open"); btn.setAttribute("aria-expanded","false");
+    window.scrollTo(0,0);
+  }
+  btn.addEventListener("click",function(){
+    var o=nav.classList.toggle("open"); btn.setAttribute("aria-expanded",o?"true":"false");
+  });
+  window.addEventListener("hashchange",show);
+  document.getElementById("yr").textContent=new Date().getFullYear();
+  show();
+
+  /* Rating & ulasan: dibaca dari issue publik berjudul "[Ulasan] ..." di GitHub */
+  (function(){
+    var REPO="NestMCC/Nev-Launcher";
+    var list=document.getElementById("reviewList");
+    function stars(n){var o="";for(var i=1;i<=5;i++)o+=i<=n?"★":'<span class="off">★</span>';return o}
+    function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+    function render(items){
+      var total=items.length,sum=0,cnt=[0,0,0,0,0,0];
+      items.forEach(function(r){sum+=r.n;cnt[r.n]++});
+      var avg=total?sum/total:0;
+      document.getElementById("avgNum").textContent=total?avg.toFixed(1).replace(".",","):"–";
+      document.getElementById("avgStars").innerHTML=stars(Math.round(avg));
+      document.getElementById("avgCount").textContent=total?total+" ulasan":"Belum ada ulasan";
+      var bars=document.getElementById("bars");bars.textContent="";
+      for(var i=5;i>=1;i--){
+        var row=el("div","bar-row");row.appendChild(el("span",null,i+"★"));
+        var tr=el("span","track"),f=el("span","fill");f.style.width=(total?cnt[i]/total*100:0)+"%";tr.appendChild(f);row.appendChild(tr);
+        row.appendChild(el("span",null,String(cnt[i])));bars.appendChild(row);
+      }
+      list.textContent="";
+      if(!total){list.appendChild(el("div","empty","Belum ada ulasan. Jadilah yang pertama menulis!"));return}
+      items.slice(0,20).forEach(function(r){
+        var w=el("div","review"),img=document.createElement("img");
+        img.src=r.avatar;img.alt="";img.loading="lazy";w.appendChild(img);
+        var b=el("div");var who=el("div","who");who.appendChild(el("span",null,r.user));
+        var st=el("span","stars");st.innerHTML=stars(r.n);who.appendChild(st);
+        who.appendChild(el("small",null,new Date(r.date).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})));
+        b.appendChild(who);if(r.text)b.appendChild(el("p",null,r.text));w.appendChild(b);list.appendChild(w);
+      });
+    }
+    function fail(){
+      document.getElementById("avgCount").textContent="Ulasan tidak dapat dimuat";
+      list.textContent="";list.appendChild(el("div","empty","Ulasan belum bisa dimuat saat ini. Coba lagi nanti."));
+    }
+    var url="https://api.github.com/search/issues?per_page=100&sort=created&order=desc&q="+
+      encodeURIComponent("repo:"+REPO+" is:issue is:open in:title \"[Ulasan]\"");
+    var cache=null;try{cache=sessionStorage.getItem("nev_reviews")}catch(e){}
+    if(cache){try{render(JSON.parse(cache))}catch(e){fail()}}
+    else fetch(url,{headers:{Accept:"application/vnd.github+json"}}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+      var out=[];(d.items||[]).forEach(function(i){
+        if(i.title.indexOf("[Ulasan]")!==0)return;
+        var m=/Rating:\s*([1-5])\s*\/\s*5/i.exec(i.body||"");if(!m)return;
+        var text=(i.body||"").replace(/^[\s\S]*?Rating:\s*[1-5]\s*\/\s*5\s*/i,"").trim().slice(0,1500);
+        out.push({n:+m[1],text:text,user:i.user.login,avatar:i.user.avatar_url+"&s=80",date:i.created_at});
+      });
+      try{sessionStorage.setItem("nev_reviews",JSON.stringify(out))}catch(e){}
+      render(out);
+    }).catch(fail);
+
+    document.getElementById("reviewForm").addEventListener("submit",function(e){
+      e.preventDefault();
+      var sel=document.querySelector('input[name="rate"]:checked'),msg=document.getElementById("formMsg");
+      if(!sel){msg.textContent="Pilih jumlah bintang dulu.";msg.style.color="#ffb25c";return}
+      var n=+sel.value,text=document.getElementById("revText").value.trim();
+      var title="[Ulasan] "+"★".repeat(n);
+      var body="Rating: "+n+"/5\n\n"+text;
+      window.open("https://github.com/"+REPO+"/issues/new?title="+encodeURIComponent(title)+"&body="+encodeURIComponent(body),"_blank","noopener");
+      msg.style.color="";msg.textContent="GitHub dibuka di tab baru. Tekan “Submit new issue” untuk mengirim ulasanmu.";
+    });
+  })();
+
+  /* Total unduhan semua rilis (jumlahkan semua berkas APK di setiap versi) */
+  (function(){
+    var els=document.querySelectorAll(".dl-total");
+    function put(t){els.forEach(function(e){e.textContent=t})}
+    function fmt(n){return n.toLocaleString("id-ID")}
+    var cached=null; try{cached=sessionStorage.getItem("nev_dl_total")}catch(e){}
+    if(cached){put(fmt(+cached));return}
+    fetch("https://api.github.com/repos/NestMCC/Nev-Launcher/releases?per_page=100",{headers:{Accept:"application/vnd.github+json"}})
+      .then(function(r){if(!r.ok)throw 0;return r.json()})
+      .then(function(rel){
+        var t=0;
+        rel.forEach(function(r){(r.assets||[]).forEach(function(a){
+          if(/\.apk$/i.test(a.name)) t+=a.download_count||0;
+        })});
+        try{sessionStorage.setItem("nev_dl_total",String(t))}catch(e){}
+        put(fmt(t));
+      })
+      .catch(function(){put("—")});
+  })();
+})();
+</script>
+</body>
+</html>
